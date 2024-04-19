@@ -37,11 +37,9 @@ const EditFoodForm = () => {
 
   const parsed_expiration = () => {
     const parsed_date = new Date(food.expiration_date)
-    const exp_year = parsed_date.toLocaleString('en-Us', { year: 'numeric' })
-    const exp_month = parsed_date.toLocaleString('en-Us', { month: '2-digit' })
-    const exp_day = parsed_date.toLocaleString('en-Us', { day: '2-digit' })
-    const parsed_exp = exp_year + "-" + exp_month + "-" + exp_day
-    return parsed_exp
+    const actual_date = parsed_date.toISOString()
+    const split_date = actual_date.split('T')[0]
+    return split_date
   }
 
   const [name, setName] = useState(food.name)
@@ -53,12 +51,26 @@ const EditFoodForm = () => {
   const [validExpiration, setExpirationValid] = useState(false)
   const [description, setDescription] = useState(food.description)
   const [user, setUser] = useState(food.user)
+  const [newImage, setImage] = useState(food.image)
+  const [validImage, setImageValid] = useState(false)
+
+  const [JSONResponse, setJSONResponse] = useState([])
+
+  // Fetch the filenames for all food images on load
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('http://localhost:3500/foodImages');
+      const jsonData = await response.json();
+      setJSONResponse(jsonData);
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
     setValidName(FOOD_REGEX.test(name))
     setValidQuantity(FOOD_REGEX.test(quantity))
     setExpirationValid(DATE_REGEX.test(expiration))
-
+    setImageValid(newImage.includes('.png'))
   }, [name, quantity, expiration])
 
   useEffect(() => {
@@ -69,6 +81,7 @@ const EditFoodForm = () => {
       setExpiration(null)
       setDescription('')
       setUser('')
+      setImage('')
       navigate(`/dash/foodLists/${id}`)
     }
   }, [isSuccess, navigate])
@@ -78,13 +91,17 @@ const EditFoodForm = () => {
   const onDescriptionChanged = e => setDescription(e.target.value)
   const onExpirationChanged = e => setExpiration(e.target.value)
   const onContainerChanged = e => setContainer(e.target.value)
+  const onFoodImageClicked = e => {
+    e.preventDefault()
+    setImage(e.target.name)
+  }
 
-  const canSave = [validName, validQuantity, validExpiration].every(Boolean) && !isLoading
+  const canSave = [validName, validQuantity, validExpiration, validImage].every(Boolean) && !isLoading
 
   const canSaveFoodClicked = async (e) => {
     e.preventDefault()
     if (canSave) {
-      await updateFood({ id: food.id, name, container, quantity, expiration_date: expiration, description, user })
+      await updateFood({ id: food.id, name, container, quantity, expiration_date: expiration, description, user, image: newImage })
     }
   }
 
@@ -108,30 +125,51 @@ const EditFoodForm = () => {
   }
 
   const expiration_color = days_remaining() <= 0 ? '-red-700/60'
-  : days_remaining() < 5 ? '-orange-400'
-    : days_remaining() < 14 ? '-yellow-400'
-      : '-green-600'
+    : days_remaining() < 5 ? '-orange-400'
+      : days_remaining() < 14 ? '-yellow-400'
+        : '-green-600'
 
   return (
-    <>
+    <div className='px-8'>
       <p className={`${errClass} `}>{error?.data?.message}</p>
-      <div className="text-3xl font-bold text-slate-800 dark:text-slate-100 pb-6 lg:pb-16 w-5/6 mx-auto">
+      <div className="text-3xl font-bold text-base-content mx-auto">
         <button onClick={() => navigate('/dash/foodLists')}>My Foods&nbsp;</button> 
         > <button onClick={() => navigate(`/dash/foodLists/${id}`)}>{food.name}&nbsp;</button> 
         > Edit
       </div>
 
-      <div className='flex justify-center w-5/6 mx-auto'>
-        <form onSubmit={canSaveFoodClicked} className='text-xl font-medium dark:text-slate-300 w-full'>
+      <div className='flex justify-center mx-auto pt-8'>
+        <form onSubmit={canSaveFoodClicked} className='text-xl font-medium text-base-content w-full'>
 
           <div className="md:grid md:grid-cols-3 flex flex-col-reverse gap-8 mb-8">
-            <div className='rounded-2xl bg-[#26273b] border border-gray-600 shadow-2xl basis-1/2 aspect-square p-4'>
-              Some Image
+            <div>
+              <div className='rounded-2xl bg-base-300 basis-1/2 aspect-square p-4'>
+                <img
+                  src={'http://localhost:3500/foodImages/' + newImage}
+                  className="w-full"
+                />
+              </div>
+              <div className='text-sm text-center'>
+                {newImage}
+              </div>
+
+              <div className='h-48 grid grid-cols-8 grid-flow-row overflow-y-auto my-6'>
+                {JSONResponse.map((fileName, index) => (
+                  <button name={fileName} value={fileName} key={index} onClick={onFoodImageClicked}>
+                    <img
+                      alt={fileName} name={fileName} value={fileName}
+                      src={'http://localhost:3500/foodImages/' + fileName}
+                      className="w-full hover:border "
+                    />
+                  </button>
+                ))}
+              </div>
+
             </div>
 
             <div className='col-span-2'>
-              <label htmlFor="name" className="block mb-2 lg:text-sm font-medium text-gray-900 dark:text-white">
-                Name of Food * <span className='text-gray-500'>[3-20 letters]</span>
+              <label htmlFor="name" className="block mb-2 text-sm font-medium">
+                Name of Food * <span className='text-base-content/50'>[3-20 letters]</span>
               </label>
               <input
                 id="name"
@@ -140,13 +178,12 @@ const EditFoodForm = () => {
                 placeholder="Lemonade"
                 required
                 onChange={onNameChanged}
-                className={`mb-6 bg-[#26273b] border border-gray-300 text-gray-900 lg:text-sm rounded-lg block  p-2.5
-                w-full md:w-4/6
-               dark:placeholder-gray-400 dark:text-white
-                ${validName ? 'border-gray-600' : 'border-red-500'}`}
+                className={`mb-6 bg-base-300 text-base rounded-lg block p-2.5
+                w-full placeholder:text-base-content/50 font-bold
+                ${validName ? '' : 'border border-error'}`}
               />
 
-              <label htmlFor="quantity" className="block mb-2 lg:text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="quantity" className="block mb-2 text-sm font-medium">
                 Quantity *
               </label>
               <input
@@ -156,12 +193,12 @@ const EditFoodForm = () => {
                 placeholder="1 big bottle"
                 required
                 onChange={onQuantityChanged}
-                className={`mb-6 bg-[#26273b] border border-gray-300 text-gray-900 lg:text-sm rounded-lg block p-2.5 
-               dark:placeholder-gray-400 dark:text-white w-4/6 md:w-1/2
-                ${validQuantity ? 'border-gray-600' : 'border-red-500'}`}
+                className={`mb-9 bg-base-300 text-base text-base-content rounded-lg block p-2.5 
+                placeholder:text-base-content/50 w-4/6 md:w-1/2 font-bold
+                ${validQuantity ? '' : 'border border-error'}`}
               />
 
-              <label htmlFor="expiration" className="block mb-2 lg:text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="expiration" className="block mb-2 text-sm font-medium">
                 Expiration Date *
               </label>
               <input
@@ -170,16 +207,16 @@ const EditFoodForm = () => {
                 value={expiration}
                 onChange={onExpirationChanged}
                 required
-                className={`bg-[#26273b] border border-gray-300 text-gray-900 lg:text-sm rounded-lg block p-2.5 
-               dark:placeholder-gray-400 dark:text-white w-4/6 md:w-1/2
-                ${validExpiration ? 'border-gray-600' : 'border-red-500'}`}
+                className={`bg-base-300 text-base text-base-content rounded-lg block p-2.5 
+                placeholder:text-base-content/50 w-4/6 md:w-1/2 font-bold
+                ${validExpiration ? '' : 'border border-error'}`}
               />
-              <div htmlFor="description" className="flex items-center text-sm font-medium text-gray-900 dark:text-slate-300 mb-6 mt-1">
+              <div htmlFor="description" className="flex items-center text-sm font-medium text-base-content mb-6 mt-1">
                 <div className={`h-2.5 w-2.5 rounded-full bg${expiration_color} me-2`}></div> {days_remaining()} day(s) left
               </div>
 
 
-              <label htmlFor="description" className="block mb-2 lg:text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="description" className="block mb-2 text-sm font-medium">
                 Description
               </label>
               <textarea
@@ -188,10 +225,10 @@ const EditFoodForm = () => {
                 value={description}
                 onChange={onDescriptionChanged}
                 placeholder="No description yet..."
-                className="mb-6 w-full md:w-3/4 bg-[#26273b] border border-gray-300 text-gray-900 lg:text-sm rounded-lg block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                className="mb-9 w-full md:w-3/4 bg-base-300 text-base text-base-content font-bold rounded-lg block p-2.5 placeholder:text-base-content/50"
               />
 
-              <label htmlFor="container" className="block mb-2 lg:text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="container" className="block mb-2 text-sm font-medium">
                 Container
               </label>
               <select
@@ -199,21 +236,21 @@ const EditFoodForm = () => {
                 name="container"
                 value={container}
                 onChange={onContainerChanged}
-                className="mb-10 w-3/4 bg-[#26273b] border border-gray-300 text-gray-900 lg:text-sm rounded-lg block p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                className="mb-9 w-full md:w-3/4 bg-base-300 text-base text-base-content font-bold rounded-lg block p-2.5 placeholder:text-base-content/50"
               >
                 {options}
               </select>
 
-              <div htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-slate-600">
-                  Author: {food.username}
-                </div>
-                <div htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-slate-600">
-                  Created On: {convertDate(food.createdAt)}
-                </div>
-                <div htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-slate-600">
-                  Last Updated: {convertDate(food.updatedAt)}
-                </div>
-              <hr className='border-[#3d3f5e] shadow-md shadow-[#3d3f5e] mt-4' />
+              <div htmlFor="description" className="block text-sm font-medium text-base-content">
+                Author: {food.username}
+              </div>
+              <div htmlFor="description" className="block text-sm font-medium text-base-content">
+                Created On: {convertDate(food.createdAt)}
+              </div>
+              <div htmlFor="description" className="block text-sm font-medium text-base-content">
+                Last Updated: {convertDate(food.updatedAt)}
+              </div>
+              <hr className='border-neutral mt-4' />
 
             </div>
 
@@ -223,8 +260,8 @@ const EditFoodForm = () => {
           <button
             title="Save"
             className='
-              rounded-lg bg-[#40654e] px-6 py-3 my-6 lg:text-sm font-bold
-              disabled:bg-[#654048] disabled:hover:bg-[#654048] disabled:cursor-not-allowed hover:-translate-y-1 hover:scale-110 transition-all ease-in-out delay-150
+              rounded-lg bg-success px-6 py-3 my-6 lg:text-sm font-bold
+              disabled:bg-error disabled:hover:bg-error disabled:cursor-not-allowed hover:-translate-y-1 hover:scale-110 transition-all ease-in-out delay-150
             '
             disabled={!canSave}
           >
@@ -239,7 +276,7 @@ const EditFoodForm = () => {
           </button>
         </form>
       </div>
-    </>
+    </div>
   )
 }
 

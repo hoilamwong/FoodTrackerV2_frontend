@@ -18,7 +18,7 @@ const DonutChart = () => {
   const options = {
     plugins: {
       legend: {
-          display: false,
+          // display: false,
           labels: {
               color: 'rgb(255, 99, 132)'
           },

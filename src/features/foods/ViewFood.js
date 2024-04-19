@@ -14,41 +14,45 @@ const ViewFood = () => {
 
   const convertDate = (date) => {
     const parsed_date = new Date(date)
-    const exp_weekday = parsed_date.toLocaleString('en-Us', { weekday: 'short' })
-    const exp_date = parsed_date.toLocaleString('en-Us', { year: 'numeric', month: '2-digit', day: '2-digit' })
+    const exp_weekday = parsed_date.toLocaleString('en-Us', { timeZone: 'UTC', weekday: 'short' })
+    const exp_date = parsed_date.toLocaleString('en-Us', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' })
     const parsed_exp_date = `${exp_date} (${exp_weekday})`
     return parsed_exp_date
   }
 
+  // Set Expiration Indicator Color
+  const expiration_color = food.days_until_expiration <= 0 ? 'bg-error'
+    : food.days_until_expiration < 5 ? 'bg-orange-400'
+      : food.days_until_expiration < 14 ? 'bg-yellow-400'
+        : 'bg-green-600'
+
   if (food) {
-    // Set Expiration Indicator Color
-    const expiration_color = food.days_until_expiration <= 0 ? '-red-700/60'
-      : food.days_until_expiration < 5 ? '-orange-400'
-        : food.days_until_expiration < 14 ? '-yellow-400'
-          : '-green-600'
-
-    const expiration_color_ = food.days_until_expiration <= 0 ? 'border-red-700'
-      : food.days_until_expiration < 5 ? 'border-orange-400'
-        : food.days_until_expiration < 14 ? 'border-yellow-400'
-          : 'border-green-600'
-
     content = (
-      <>
+      <div className="relative min-h-lvh px-8">
         {/* <p className={`${errClass} `}>{error?.data?.message}</p> */}
-        <div className="text-3xl font-bold text-slate-800 dark:text-slate-100 pb-6 lg:pb-16 w-5/6 mx-auto">
+        <div className="text-3xl font-bold text-base-content mx-auto">
           <button onClick={() => navigate('/dash/foodLists')}>My Foods</button> > {food.name}
         </div>
 
-        <div className='flex flex-col justify-center w-5/6 mx-auto'>
-          <form className='text-xl font-medium dark:text-slate-300 w-full'>
+        <div className='flex flex-col justify-center mx-auto pt-8'>
+          <form className='text-xl font-medium text-base-content w-full'>
 
             <div className="md:grid md:grid-cols-3 flex flex-col-reverse gap-8 mb-8">
-              <div className='rounded-2xl bg-[#26273b] shadow-2xl basis-1/2 aspect-square p-4'>
-                Some Image
+              <div>
+                <div className='rounded-2xl bg-base-300 basis-1/2 aspect-square p-4'>
+                  <img
+                    src={'http://localhost:3500/foodImages/' + food.image}
+                    className="w-full"
+                  />
+                </div>
+                <div className='text-sm text-center'>
+                  {food.image}
+                </div>
               </div>
 
-              <div className='col-span-2'>
-                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+
+              <div className='col-span-2 text-base-content text-base'>
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-base-content">
                   Name of Food
                 </label>
                 <input
@@ -57,12 +61,10 @@ const ViewFood = () => {
                   value={food.name}
                   placeholder="Lemonade"
                   readOnly
-                  className={`mb-6 bg-[#26273b] pointer-events-none text-sm rounded-lg block p-2.5
-                w-full md:w-4/6
-               dark:placeholder-gray-400 dark:text-white`}
+                  className={`mb-6 bg-primary text-primary-content font-bold pointer-events-none text-base rounded-lg block p-2.5 w-4/6`}
                 />
 
-                <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label htmlFor="quantity" className="block mb-2 text-sm font-medium ">
                   Quantity
                 </label>
                 <input
@@ -71,11 +73,11 @@ const ViewFood = () => {
                   value={food.quantity}
                   placeholder="1 big bottle"
                   readOnly
-                  className={`mb-6 bg-[#26273b] pointer-events-none text-sm rounded-lg block p-2.5 
-               dark:placeholder-gray-400 dark:text-white w-4/6 md:w-1/2`}
+                  className={`mb-6 bg-base-300 text-base-content font-bold pointer-events-none text-base rounded-lg block p-2.5 
+                    w-4/6 md:w-1/2`}
                 />
 
-                <label htmlFor="expiration" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label htmlFor="expiration" className="block mb-2 text-sm font-medium ">
                   Expiration Date
                 </label>
                 <input
@@ -83,14 +85,14 @@ const ViewFood = () => {
                   type='text'
                   value={convertDate(food.expiration_date)}
                   readOnly
-                  className={`bg-[#26273b]  ${expiration_color_} shadow-sm shadow${expiration_color} pointer-events-none text-sm rounded-lg block p-2.5 
-                  dark:placeholder-gray-400 dark:text-white w-4/6 md:w-1/2`}
+                  className={`bg-base-300 text-base-content font-bold placeholder:text-neutral-content shadow-sm shadow${expiration_color} pointer-events-none text-base rounded-lg block p-2.5 
+                   w-4/6 md:w-1/2`}
                 />
-                <div htmlFor="description" className="flex items-center text-sm font-medium text-gray-900 dark:text-slate-300 mb-6 mt-1">
-                  <div className={`h-2.5 w-2.5 rounded-full bg${expiration_color} me-2`}></div> {food.days_until_expiration} day(s) left
+                <div htmlFor="description" className="flex items-center text-sm font-medium mb-6 mt-1 text-base-content">
+                  <div className={`h-2.5 w-2.5 rounded-full ${expiration_color} me-2`}></div> {food.days_until_expiration} day(s) left
                 </div>
 
-                <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label htmlFor="description" className="block mb-2 text-sm font-medium ">
                   Description
                 </label>
                 <textarea
@@ -99,10 +101,10 @@ const ViewFood = () => {
                   rows={3}
                   value={food.description}
                   placeholder="No description yet..."
-                  className="mb-6 w-full md:w-3/4 bg-[#26273b] pointer-events-none text-sm rounded-lg block p-2.5 darkdark:placeholder-gray-400 dark:text-white"
+                  className="mb-6 w-full md:w-3/4 bg-base-300 text-base-content placeholder:font-medium font-bold pointer-events-none text-base rounded-lg block p-2.5"
                 />
 
-                <label htmlFor="container" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label htmlFor="container" className="block mb-2 text-sm font-medium ">
                   Container
                 </label>
                 <select
@@ -110,24 +112,24 @@ const ViewFood = () => {
                   name="container"
                   readOnly
                   value={food.container}
-                  className="mb-10 w-3/4 bg-[#26273b] pointer-events-none text-sm rounded-lg block p-2.5 darkdark:placeholder-gray-400 dark:text-white"
+                  className="mb-10 w-3/4 bg-base-300 text-base-content font-bold pointer-events-none text-base rounded-lg block p-2.5 "
                 >
                   <option>
                     {food.container}
                   </option>
                 </select>
 
-                <div htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-slate-600">
+                <div htmlFor="description" className="block text-sm font-medium text-base-content">
                   Author: {food.username}
                 </div>
-                <div htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-slate-600">
+                <div htmlFor="description" className="block text-sm font-medium text-base-content">
                   Created On: {convertDate(food.createdAt)}
                 </div>
-                <div htmlFor="description" className="block text-sm font-medium text-gray-900 dark:text-slate-600">
+                <div htmlFor="description" className="block text-sm font-medium text-base-content">
                   Last Updated: {convertDate(food.updatedAt)}
                 </div>
 
-                <hr className='border-[#3d3f5e] shadow-md shadow-[#3d3f5e] mt-4' />
+                <hr className='border-neutral mt-4' />
 
               </div>
             </div>
@@ -136,7 +138,7 @@ const ViewFood = () => {
           <div>
             <button
               onClick={() => navigate(`/dash/foodLists/${id}/edit`)}
-              className="rounded-lg bg-[#4f46bb] hover:bg-[#bba946] hover:-translate-y-1 hover:scale-110 transition-all ease-in-out delay-150 px-6 py-3 my-6 lg:text-sm font-bold"
+              className="rounded-lg bg-accent text-accent-content hover:bg-secondary hover:-translate-y-1 hover:scale-110 transition-all ease-in-out delay-150 px-6 py-3 my-6 lg:text-sm font-bold"
             >
               Edit
             </button>
@@ -144,7 +146,7 @@ const ViewFood = () => {
         </div>
 
 
-      </>
+      </div>
     )
   } else return null
 

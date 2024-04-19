@@ -14,3 +14,7 @@
   background-color: rgb(199 210 254 / 0.3);
   border-radius: 0.5rem/* 16px */;
 }
+
+img {
+  image-rendering: pixelated;
+}
