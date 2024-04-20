@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { selectAllFoods } from "../foods/foodsApiSlice"
-import ChooseFood from '../foods/ChooseFood'
 
 const FOOD_REGEX = /^[0-9A-z ]{1,50}$/
 const DATE_REGEX = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/
@@ -24,6 +23,8 @@ const NewFood = () => {
   const [name, setName] = useState('')
   const [validName, setValidName] = useState(false)
   const [container, setContainer] = useState('Fridge')
+  const [newContainer, setNewContainer] = useState('')
+  const [validNewContainer, setValidNewContainer] = useState(false)
   const [quantity, setQuantity] = useState('')
   const [validQuantity, setValidQuantity] = useState(false)
   const [expiration, setExpiration] = useState('')
@@ -50,8 +51,8 @@ const NewFood = () => {
     setValidQuantity(FOOD_REGEX.test(quantity))
     setExpirationValid(DATE_REGEX.test(expiration))
     setImageValid(image.includes('.png'))
-
-  }, [name, quantity, expiration, image])
+    setValidNewContainer(!(newContainer.length > 0))
+  }, [name, quantity, expiration, image, newContainer])
 
   useEffect(() => {
     if (isSuccess) {
@@ -74,7 +75,15 @@ const NewFood = () => {
   const onFoodImageClicked = e => {
     e.preventDefault()
     setImage(e.target.name)
-    console.log(e.target.name);
+  }
+  const onNewContainerChanged = e => {
+    e.preventDefault()
+    setNewContainer(e.target.value)
+  }
+  const onContainerAdded = () => {
+    let newContainerValue = document.getElementById('newContainer').value
+    setContainer(newContainerValue)
+    setNewContainer('')
   }
 
   const canSave = [validName, validQuantity, validExpiration, validImage].every(Boolean) && !isLoading
@@ -87,16 +96,49 @@ const NewFood = () => {
   }
 
   const errClass = isError ? "" : "hidden"
-
   const uniqueContainers = [...new Set(foods.map(food => food.container))]
-  const options = uniqueContainers.map(container => {
+
+  const foodContainerDropDown = () => {
     return (
-      <option
-        key={container}
-        value={container}
-      > {container}</option >
+      <div className="dropdown">
+        <div tabIndex={0} role="button" className="btn m-1">{container}</div>
+        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+          {uniqueContainers.map(container => {
+            return (
+              <li
+                id="container"
+                name="container"
+                key={container}
+              >
+                <button value={container} onClick={onContainerChanged}>{container}</button>
+              </li >
+            )
+          })}
+          <li><button>
+            <div>
+              <input
+                id="newContainer"
+                type="text"
+                value={newContainer}
+                placeholder="Snack Box"
+                onChange={onNewContainerChanged}
+                className={`bg-base-300 text-base rounded-lg block  p-2.5
+              w-full placeholder:text-base-content/50 font-bold`}
+              />
+              <br />
+              <button
+                className="btn btn-sm float-right"
+                onClick={onContainerAdded}
+                disabled={validNewContainer}
+              >
+                Add Container
+              </button>
+            </div>
+          </button></li>
+        </ul>
+      </div>
     )
-  })
+  }
 
   return (
     <div className='px-8'>
@@ -105,41 +147,12 @@ const NewFood = () => {
         Add New Food
       </div>
 
-      <div className="dropdown">
-        <div tabIndex={0} role="button" className="btn m-1">{container}</div>
-        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-          {uniqueContainers.map(container => {
-            return (
-              <li key={container} value={container}><a>{container}</a> </li >
-            )
-          })}
-          <li><a>
-            <div>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                placeholder="Snack Box"
-                required
-                onChange={onNameChanged}
-                className={`bg-base-300 text-base rounded-lg block  p-2.5
-                w-full placeholder:text-base-content/50 font-bold
-                ${validName ? '' : 'border border-error'}`}
-              />
-              <br />
-              <button className="btn btn-sm float-right">Add Container</button>
-            </div>
-          </a></li>
-        </ul>
-      </div>
-
-
       <div className='flex justify-center mx-auto pt-8'>
         <form onSubmit={canSaveFoodClicked} className='text-xl font-medium text-base-content w-full'>
 
           <div className="md:grid md:grid-cols-3 flex flex-col-reverse gap-8 mb-8">
             <div>
-              <div className={`rounded-2xl bg-base-300 basis-1/2 aspect-square p-4 ${validImage ? '' : 'border border-error'}`}>
+              <div className={`rounded-2xl bg-base-300 basis-1/2 aspect-square p-4 w-72 mx-auto ${validImage ? '' : 'border border-error'}`}>
                 {image ?
                   <img src={`http://localhost:3500/foodImages/${image}`}
                     alt="Food" className='w-full' />
@@ -149,10 +162,10 @@ const NewFood = () => {
               </div>
 
               <div>
-                <div className='text-sm text-center'>
+                <div className='text-sm text-center py-2'>
                   {image ? image : <p>Select Icon Below</p>}
                 </div>
-                <div className='h-48 grid grid-cols-8 grid-flow-row overflow-y-auto my-6'>
+                <div className='h-52 grid grid-cols-4 md:grid-cols-8 lg:grid-cols-10 grid-flow-row overflow-y-auto my-6'>
                   {JSONResponse.map((image, index) => (
                     <button name={image} value={image} key={index} onClick={onFoodImageClicked}>
                       <img
@@ -227,19 +240,8 @@ const NewFood = () => {
               <label htmlFor="container" className="block mb-2 text-sm font-medium ">
                 Container
               </label>
-              <select
-                id="container"
-                name="container"
-                value={container}
-                onChange={onContainerChanged}
-                className="mb-10 w-3/4 bg-base-300 text-base text-base-content font-bold rounded-lg block p-2.5 placeholder:text-base-content/50"
-              >
-                {options}
-                <option
-
-                ><input></input></option>
-              </select>
-              <hr className='border-neutral shadow-md shadow-neutral' />
+              {foodContainerDropDown()}
+              <hr className='mt-9 border-neutral shadow-md shadow-neutral' />
             </div>
 
 

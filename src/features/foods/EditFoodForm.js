@@ -143,17 +143,17 @@ const EditFoodForm = () => {
 
           <div className="md:grid md:grid-cols-3 flex flex-col-reverse gap-8 mb-8">
             <div>
-              <div className='rounded-2xl bg-base-300 basis-1/2 aspect-square p-4'>
+              <div className='rounded-2xl bg-base-300 basis-1/2 aspect-square p-4 w-72 mx-auto'>
                 <img
                   src={'http://localhost:3500/foodImages/' + newImage}
                   className="w-full"
                 />
               </div>
-              <div className='text-sm text-center'>
+              <div className='text-sm text-center py-2'>
                 {newImage}
               </div>
 
-              <div className='h-48 grid grid-cols-8 grid-flow-row overflow-y-auto my-6'>
+              <div className='h-48 grid grid-cols-4 md:grid-cols-8 lg:grid-cols-10 grid-flow-row overflow-y-auto my-6'>
                 {JSONResponse.map((fileName, index) => (
                   <button name={fileName} value={fileName} key={index} onClick={onFoodImageClicked}>
                     <img
