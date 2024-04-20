@@ -64,6 +64,10 @@ const Food = ({ foodId }) => {
           {food.quantity}
         </td>
 
+        <td>
+          {food.container}
+        </td>
+
         <th className="px-6 font-medium text-blue-500">
           <button className="pr-6 hover:underline" onClick={handleView}>View</button>
           <button className="pr-6 hover:underline" onClick={handleEdit}>Edit</button>

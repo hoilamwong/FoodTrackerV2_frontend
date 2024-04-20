@@ -38,30 +38,33 @@ const FoodsList = () => {
 
         <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4">
           <div>
-            <button id="sortDrowndownButton" data-dropdown-toggle="sortDropdown" className="inline-flex items-center text-gray-500 hover:text-white font-medium rounded-lg text-sm px-3 py-1.5" type="button">
-              <span className="sr-only">Container button</span>
-              Sort
-              <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-              </svg>
-            </button>
-            <button className="inline-flex items-center text-gray-500 hover:text-white font-medium rounded-lg text-sm px-3 py-1.5" type="button">
-              <span className="sr-only">Container button</span>
-              Filter
-              <svg className="w-2.5 h-2.5 ms-2.5 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-              </svg>
-            </button>
-            <button className="inline-flex items-center text-gray-500 hover:text-white font-medium rounded-lg text-sm px-3 py-1.5" type="button">
-              <span className="sr-only">Container button</span>
-              Show
-              <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-              </svg>
-            </button>
+            <div className="dropdown dropdown-hover text-base-neutral-content/10 text-sm px-4">
+              <button tabIndex={0} role="button" className="inline-flex items-center">
+                Expiration
+                <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                </svg>
+              </button>
+              <ul tabIndex={0} className="dropdown-content z-[1] menu md:p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>Item 1</a></li>
+                <li><a>Item 2</a></li>
+              </ul>
+            </div>
+            <div className="dropdown dropdown-hover text-base-neutral-content/10 text-sm px-4">
+              <button tabIndex={0} role="button" className="inline-flex items-center">
+                Container
+                <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                </svg>
+              </button>
+              <ul tabIndex={0} className="dropdown-content z-[1] menu md:p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a>Item 1</a></li>
+                <li><a>Item 2</a></li>
+              </ul>
+            </div>
 
             <button
-              className="btn btn-outline btn-secondary"
+              className="btn btn-sm btn-outline btn-secondary"
               type="button"
               onClick={() => navigate('/dash/foodLists/new')}
             >
@@ -72,7 +75,7 @@ const FoodsList = () => {
         </div>
 
         <div className="relative overflow-x-auto rounded-lg">
-          <table className="table ">
+          <table className="table table-xs lg:table-md">
             <thead>
               <tr>
                 <th>
@@ -83,6 +86,7 @@ const FoodsList = () => {
                 <th>Name</th>
                 <th>Days Until Expiration</th>
                 <th>Quantity</th>
+                <th>Container</th>
                 <th></th>
               </tr>
             </thead>
@@ -96,6 +100,7 @@ const FoodsList = () => {
                 <th>Name</th>
                 <th>Days Until Expiration</th>
                 <th>Quantity</th>
+                <th>Container</th>
                 <th></th>
               </tr>
             </tfoot>

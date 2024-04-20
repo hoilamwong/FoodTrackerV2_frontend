@@ -71,13 +71,12 @@ const NewFood = () => {
   const onQuantityChanged = e => setQuantity(e.target.value)
   const onDescriptionChanged = e => setDescription(e.target.value)
   const onExpirationChanged = e => setExpiration(e.target.value)
-  const onContainerChanged = e => setContainer(e.target.value)
+  const onContainerChanged = e => { e.preventDefault(); setContainer(e.target.value)}
   const onFoodImageClicked = e => {
     e.preventDefault()
     setImage(e.target.name)
   }
   const onNewContainerChanged = e => {
-    e.preventDefault()
     setNewContainer(e.target.value)
   }
   const onContainerAdded = () => {
@@ -114,7 +113,7 @@ const NewFood = () => {
               </li >
             )
           })}
-          <li><button>
+          <li><a>
             <div>
               <input
                 id="newContainer"
@@ -126,15 +125,15 @@ const NewFood = () => {
               w-full placeholder:text-base-content/50 font-bold`}
               />
               <br />
-              <button
+              <input
                 className="btn btn-sm float-right"
                 onClick={onContainerAdded}
                 disabled={validNewContainer}
-              >
-                Add Container
-              </button>
+                type='button'
+                value='Add Container'
+              />
             </div>
-          </button></li>
+            </a></li>
         </ul>
       </div>
     )
@@ -152,7 +151,7 @@ const NewFood = () => {
 
           <div className="md:grid md:grid-cols-3 flex flex-col-reverse gap-8 mb-8">
             <div>
-              <div className={`rounded-2xl bg-base-300 basis-1/2 aspect-square p-4 w-72 mx-auto ${validImage ? '' : 'border border-error'}`}>
+              <div className={`rounded-2xl bg-base-300 basis-1/2 aspect-square p-4 w-48 mx-auto ${validImage ? '' : 'border border-error'}`}>
                 {image ?
                   <img src={`http://localhost:3500/foodImages/${image}`}
                     alt="Food" className='w-full' />

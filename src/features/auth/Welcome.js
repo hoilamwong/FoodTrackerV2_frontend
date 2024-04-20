@@ -16,7 +16,7 @@ const Welcome = () => {
 
   const allFoods = useSelector(state => selectAllFoods(state))
 
-  const expiringFoodPercentage = (allFoods.filter(food => food.days_until_expiration <= 5).length / allFoods.length) * 100
+  const expiringFoodPercentage = (allFoods.filter(food => food.days_until_expiration <= 5).length / allFoods.length).toFixed(4) * 100
 
   let status
   if (isLoading) status = <p>Fetching Foods...</p>
@@ -33,7 +33,7 @@ const Welcome = () => {
             <DonutChart />
           </figure>
           <div className="card-body">
-            <h2 className="card-title">{expiringFoodPercentage}% of items are expiring / expired!</h2>
+            <h2 className="card-title">{expiringFoodPercentage}% of items are <br/>expiring soon / expired!</h2>
             <p>Click the button to view a list of food in your storage.</p>
             <div className="card-actions justify-end">
               <button className="btn btn-accent">View Items</button>

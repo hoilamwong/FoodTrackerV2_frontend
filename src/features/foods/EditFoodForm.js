@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 
-const FOOD_REGEX = /^[0-9A-z ]{1,20}$/
+const FOOD_REGEX = /^[0-9A-z. ]{1,20}$/
 const DATE_REGEX = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/
 
 const EditFoodForm = () => {
@@ -45,6 +45,8 @@ const EditFoodForm = () => {
   const [name, setName] = useState(food.name)
   const [validName, setValidName] = useState(false)
   const [container, setContainer] = useState(food.container)
+  const [newContainer, setNewContainer] = useState('')
+  const [validNewContainer, setValidNewContainer] = useState(false)
   const [quantity, setQuantity] = useState(food.quantity)
   const [validQuantity, setValidQuantity] = useState(false)
   const [expiration, setExpiration] = useState(parsed_expiration())
@@ -71,7 +73,8 @@ const EditFoodForm = () => {
     setValidQuantity(FOOD_REGEX.test(quantity))
     setExpirationValid(DATE_REGEX.test(expiration))
     setImageValid(newImage.includes('.png'))
-  }, [name, quantity, expiration])
+    setValidNewContainer(!(newContainer.length > 0))
+  }, [name, quantity, expiration, newImage, newContainer])
 
   useEffect(() => {
     if (isSuccess) {
@@ -90,10 +93,19 @@ const EditFoodForm = () => {
   const onQuantityChanged = e => setQuantity(e.target.value)
   const onDescriptionChanged = e => setDescription(e.target.value)
   const onExpirationChanged = e => setExpiration(e.target.value)
-  const onContainerChanged = e => setContainer(e.target.value)
+  const onContainerChanged = e => {e.preventDefault(); setContainer(e.target.value)}
   const onFoodImageClicked = e => {
     e.preventDefault()
     setImage(e.target.name)
+  }
+  const onNewContainerChanged = e => {
+    e.preventDefault()
+    setNewContainer(e.target.value)
+  }
+  const onContainerAdded = () => {
+    let newContainerValue = document.getElementById('newContainer').value
+    setContainer(newContainerValue)
+    setNewContainer('')
   }
 
   const canSave = [validName, validQuantity, validExpiration, validImage].every(Boolean) && !isLoading
@@ -107,14 +119,48 @@ const EditFoodForm = () => {
 
   const errClass = isError ? "" : "hidden"
   const uniqueContainers = [...new Set(foods.map(food => food.container))]
-  const options = uniqueContainers.map(container => {
+
+  const foodContainerDropDown = () => {
     return (
-      <option
-        key={container}
-        value={container}
-      > {container}</option >
+      <div className="dropdown">
+        <div tabIndex={0} role="button" className="btn m-1">{container}</div>
+        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+          {uniqueContainers.map(container => {
+            return (
+              <li
+                id="container"
+                name="container"
+                key={container}
+              >
+                <button value={container} onClick={onContainerChanged}>{container}</button>
+              </li >
+            )
+          })}
+          <li><a>
+            <div>
+              <input
+                id="newContainer"
+                type="text"
+                value={newContainer}
+                placeholder="Snack Box"
+                onChange={onNewContainerChanged}
+                className={`bg-base-300 text-base rounded-lg block  p-2.5
+              w-full placeholder:text-base-content/50 font-bold`}
+              />
+              <br />
+              <input
+                className="btn btn-sm float-right"
+                onClick={onContainerAdded}
+                disabled={validNewContainer}
+                type='button'
+                value='Add Container'
+              />
+            </div>
+            </a></li>
+        </ul>
+      </div>
     )
-  })
+  }
 
   const days_remaining = () => {
     const currentDate = new Date()
@@ -231,17 +277,9 @@ const EditFoodForm = () => {
               <label htmlFor="container" className="block mb-2 text-sm font-medium">
                 Container
               </label>
-              <select
-                id="container"
-                name="container"
-                value={container}
-                onChange={onContainerChanged}
-                className="mb-9 w-full md:w-3/4 bg-base-300 text-base text-base-content font-bold rounded-lg block p-2.5 placeholder:text-base-content/50"
-              >
-                {options}
-              </select>
+              {foodContainerDropDown()}
 
-              <div htmlFor="description" className="block text-sm font-medium text-base-content">
+              <div htmlFor="description" className="block text-sm font-medium text-base-content pt-4">
                 Author: {food.username}
               </div>
               <div htmlFor="description" className="block text-sm font-medium text-base-content">
