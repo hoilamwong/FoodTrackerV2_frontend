@@ -8,7 +8,7 @@ const FoodsList = () => {
   const navigate = useNavigate()
 
   const [filteredContainers, setFilteredContainers] = useState([])
-  const [filteredDate, setFilteredDate] = useState([{expired: true, day: 15}])
+  const [filteredDate, setFilteredDate] = useState([{ expired: true, day: 15 }])
 
   let uniqueContainers = []
 
@@ -19,13 +19,14 @@ const FoodsList = () => {
       setFilteredContainers(filteredContainers => filteredContainers.filter(container => container !== e.target.value))
     }
   }
-  const onFilteredDateChanged = (e) => {
-    if (e.target.checked) {
-      setFilteredDate(filteredDate => [...filteredDate, e.target.value])
-    } else {
-      setFilteredDate(filteredDate => filteredDate.filter(container => container !== e.target.value))
-    }
-    console.log(filteredDate);
+  const onExpiredCheck = (e) => {
+    setFilteredDate(filteredDate => [{ expired: e.target.checked, day: filteredDate[0].day }])
+    console.log([{ expired: e.target.checked, day: filteredDate[0].day }]);
+  }
+
+  const onExpirationChange = (e) => {
+    setFilteredDate(filteredDate => [{ expired: filteredDate[0].expired, day: e.target.value }])
+    console.log([{ expired: filteredDate[0].expired, day: e.target.value }]);
   }
 
   const {
@@ -53,7 +54,7 @@ const FoodsList = () => {
 
   if (isSuccess) {
     const { ids, entities } = foods
-    console.log(entities);
+    // console.log(entities);
     // Get Unique Containers
     const tempContainers = new Set()
     for (var key in entities) {
@@ -61,10 +62,17 @@ const FoodsList = () => {
     }
     uniqueContainers = [...tempContainers]
 
+    // Filter Ids by matching container
     const filteredContainersIds = ids.filter(id => filteredContainers.includes(entities[id].container))
-    const filteredIds = filteredContainersIds
+    // If the value of range slider is 15 (max value), show all items
+    const filteredRange = filteredDate[0].day == 15 ?
+      filteredContainersIds : filteredContainersIds.filter(id =>
+        entities[id].days_until_expiration <= filteredDate[0].day)
+    // Filter Expired items
+    const filteredExpiredIds = filteredDate[0].expired ? filteredRange :
+      filteredRange.filter(id => entities[id].days_until_expiration > 0)
 
-
+    const filteredIds = filteredExpiredIds
     const tableContent = filteredIds?.length
       ? filteredIds.map(foodId => <Food key={foodId} foodId={foodId} />)
       : null
@@ -85,18 +93,31 @@ const FoodsList = () => {
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                 </svg>
               </button>
-              <ul tabIndex={0} className="dropdown-content bg-base-200 z-[1] menu md:p-2 shadow rounded-box w-52">
-                <input type="range" min={0} max="15" value="5" step={1} className="range range-sm range-primary" />
+              <ul tabIndex={0} className="dropdown-content bg-base-200 z-[1] menu md:p-2 shadow rounded-box w-52 ">
+                <input
+                  type="range"
+                  min={0}
+                  max={15}
+                  value={filteredDate.day}
+                  step={1}
+                  onChange={onExpirationChange}
+                  className="range range-sm range-primary" />
                 <div className="text-xs pt-1 mb-4">
-                  <span class="absolute start-0 ml-1">0</span>
-                  <span class="absolute start-1/3 -translate-x-1/2 ml-1">5</span>
-                  <span class="absolute start-2/3 -translate-x-1/2 ml-1">10</span>
-                  <span class="absolute end-0 ">&gt;14</span>
+                  <span className="absolute start-0 ml-1">0</span>
+                  <span className="absolute start-1/3 -translate-x-1/2 ml-1">5</span>
+                  <span className="absolute start-2/3 -translate-x-1/2 ">10</span>
+                  <span className="absolute end-0 ">14+</span>
                 </div>
                 <div className="form-control">
                   <label className="label cursor-pointer">
                     <span className="label-text ">Show Expired</span>
-                    <input type="checkbox" defaultChecked className="checkbox checkbox-primary" value={0} onChange={onFilteredDateChanged} />
+                    <input
+                      type="checkbox"
+                      defaultChecked
+                      className="checkbox checkbox-primary"
+                      checked={filteredDate.expired}
+                      onChange={onExpiredCheck}
+                    />
                   </label>
                 </div>
               </ul>
