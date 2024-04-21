@@ -16,7 +16,7 @@ const Welcome = () => {
 
   const allFoods = useSelector(state => selectAllFoods(state))
 
-  const expiringFoodPercentage = (allFoods.filter(food => food.days_until_expiration <= 5).length / allFoods.length).toFixed(4) * 100
+  const expiringFoodPercentage = ((allFoods.filter(food => food.days_until_expiration <= 5).length / allFoods.length) * 100).toFixed(2) 
 
   let status
   if (isLoading) status = <p>Fetching Foods...</p>
