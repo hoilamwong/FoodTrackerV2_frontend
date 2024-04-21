@@ -68,9 +68,9 @@ const FoodsList = () => {
     const filteredRange = filteredDate[0].day == 15 ?
       filteredContainersIds : filteredContainersIds.filter(id =>
         entities[id].days_until_expiration <= filteredDate[0].day)
-    // Filter Expired items
+    // Filter Expired items (item with 0 day is not 'expired')
     const filteredExpiredIds = filteredDate[0].expired ? filteredRange :
-      filteredRange.filter(id => entities[id].days_until_expiration > 0)
+      filteredRange.filter(id => entities[id].days_until_expiration >= 0)
 
     const filteredIds = filteredExpiredIds
     const tableContent = filteredIds?.length
