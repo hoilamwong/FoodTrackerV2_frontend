@@ -11,6 +11,7 @@ const FoodsList = () => {
   const [filteredDate, setFilteredDate] = useState([{ expired: true, day: 15 }])
 
   let uniqueContainers = []
+  const sortingOptions = []
 
   const onFilteredContainersChanged = (e) => {
     if (e.target.checked) {
@@ -65,7 +66,7 @@ const FoodsList = () => {
     // Filter Ids by matching container
     const filteredContainersIds = ids.filter(id => filteredContainers.includes(entities[id].container))
     // If the value of range slider is 15 (max value), show all items
-    const filteredRange = filteredDate[0].day == 15 ?
+    const filteredRange = filteredDate[0].day === 15 ?
       filteredContainersIds : filteredContainersIds.filter(id =>
         entities[id].days_until_expiration <= filteredDate[0].day)
     // Filter Expired items (item with 0 day is not 'expired')
@@ -85,7 +86,7 @@ const FoodsList = () => {
 
         <div className="flex items-center justify-between flex-column md:flex-row flex-wrap space-y-4 md:space-y-0 py-4">
           <div>
-
+            {/* Expiration Filter DropDown */}
             <div className="dropdown dropdown-hover  text-sm px-4">
               <button tabIndex={0} className="inline-flex items-center">
                 Expiration
@@ -93,7 +94,7 @@ const FoodsList = () => {
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                 </svg>
               </button>
-              <ul tabIndex={0} className="dropdown-content bg-base-200 z-[1] menu md:p-2 shadow rounded-box w-52 ">
+              <ul tabIndex={0} className="dropdown-content bg-base-100 z-[1] menu md:p-2 shadow rounded-box w-52 ">
                 <input
                   type="range"
                   min={0}
@@ -106,7 +107,7 @@ const FoodsList = () => {
                   <span className="absolute start-0 ml-1">0</span>
                   <span className="absolute start-1/3 -translate-x-1/2 ml-1">5</span>
                   <span className="absolute start-2/3 -translate-x-1/2 ">10</span>
-                  <span className="absolute end-0 ">14+</span>
+                  <span className="absolute end-0 ">15+</span>
                 </div>
                 <div className="form-control">
                   <label className="label cursor-pointer">
@@ -122,6 +123,7 @@ const FoodsList = () => {
                 </div>
               </ul>
             </div>
+            {/* Container Filter DropDown */}
             <div className="dropdown dropdown-hover text-base-neutral-content/10 text-sm px-4">
               <button tabIndex={0} className="inline-flex items-center">
                 Container
@@ -129,7 +131,7 @@ const FoodsList = () => {
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                 </svg>
               </button>
-              <ul tabIndex={0} className="dropdown-content z-[1] menu md:p-2 shadow bg-base-200 rounded-box w-52">
+              <ul tabIndex={0} className="dropdown-content z-[1] menu md:p-2 shadow bg-base-100 rounded-box w-52">
                 {uniqueContainers.map(container => {
                   return (
                     <div className="form-control" key={container}>
@@ -142,7 +144,27 @@ const FoodsList = () => {
                 })}
               </ul>
             </div>
-
+            {/* Sorting Options DropDown */}
+            <div className="dropdown dropdown-hover text-base-neutral-content/10 text-sm px-4">
+              <button tabIndex={0} className="inline-flex items-center">
+                Container
+                <svg className="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                </svg>
+              </button>
+              <ul tabIndex={0} className="dropdown-content z-[1] menu md:p-2 shadow bg-base-100 rounded-box w-52">
+                {uniqueContainers.map(container => {
+                  return (
+                    <div className="form-control" key={container}>
+                      <label className="label cursor-pointer">
+                        <span className="label-text"> {container} </span>
+                        <input type="checkbox" className="checkbox checkbox-sm checkbox-primary" defaultChecked value={container} onChange={onFilteredContainersChanged} />
+                      </label>
+                    </div>
+                  )
+                })}
+              </ul>
+            </div>
             <button
               className="btn btn-sm btn-outline btn-secondary"
               type="button"

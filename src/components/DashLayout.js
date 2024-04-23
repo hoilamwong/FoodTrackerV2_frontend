@@ -10,13 +10,13 @@ const DashLayout = () => {
   return (
     <>
       <div data-theme={currentTheme} className="flex">
-        <DashHeader />
+        {/* <DashHeader /> */}
 
-        <div className="w-full bg-base-100 font-mono">
+        <div className="w-full font-mono">
           <div className="justify-center fixed top-0 z-40 w-full p-3">
-            <DashNavbar />
+            {/* <DashNavbar /> */}
           </div>
-          <div className="lg:ml-64 py-20  my-4">
+          <div className=" pt-20  mt-4">
             <Outlet />
           </div>
         </div>

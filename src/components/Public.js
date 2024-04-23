@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 
 const Public = () => {
   const content = (
-    <section className="bg-gradient-to-br from-blue-400 to-emerald-700 h-screen">
-      <header>
-        <Link to="/login">Login</Link>
-      </header>
+    <section className="h-screen">
       <main>
         public main... description.. images
       </main>

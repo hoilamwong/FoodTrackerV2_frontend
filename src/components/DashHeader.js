@@ -9,6 +9,7 @@ const DashHeader = () => {
   const { pathname } = useLocation()
 
   const onGoHomeClicked = () => navigate('/dash')
+  
 
   let goHomeButton = null
   if (pathname !== '/dash') {
@@ -27,8 +28,8 @@ const DashHeader = () => {
   const time = new Intl.DateTimeFormat('en-US', { timeStyle: 'long' }).format(date)
 
   const content = (
-    <div className="transition-transform -translate-x-full lg:translate-x-0 z-40 flex flex-col justify-between bg-base-100 min-h-screen py-8 fixed top-20 w-64">
-      <ul className="menu bg-base-200 w-56 rounded-box mx-auto shadow-md">
+    <div className="transition-transform -translate-x-full lg:translate-x-0 z-40 flex flex-col justify-between h-56 py-8 fixed top-20 w-64">
+      <ul className="menu w-56 rounded-box mx-auto">
         <li>
           <h2 onClick={onGoHomeClicked} className="menu-title hidden lg:block">
             🥡🥡🥡
@@ -87,9 +88,6 @@ const DashHeader = () => {
       </ul>
 
       <div className="text-white text-base text-center h-fit">
-        {/* <button className="bg-indigo-950/70 dark:bg-indigo-900/90 border-4 w-full border-indigo-950/20 lg:rounded-3xl lg:w-4/6 py-1">
-          LogOut
-        </button> */}
         <p className="text-sm font-normal text-base-content/70 pt-14">
           {today}<br />
           {time}
