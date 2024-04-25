@@ -1,6 +1,4 @@
 import { Outlet } from "react-router-dom"
-import DashHeader from "./DashHeader"
-import DashNavbar from "./DashNavbar"
 import { useSelector } from 'react-redux';
 import { selectTheme } from "../features/auth/globalSlice";
 
@@ -10,15 +8,8 @@ const DashLayout = () => {
   return (
     <>
       <div data-theme={currentTheme} className="flex">
-        {/* <DashHeader /> */}
-
-        <div className="w-full font-mono">
-          <div className="justify-center fixed top-0 z-40 w-full p-3">
-            {/* <DashNavbar /> */}
-          </div>
-          <div className=" pt-20  mt-4">
-            <Outlet />
-          </div>
+        <div className="w-full font-mono bg-base-200 h-screen">
+          <Outlet />
         </div>
       </div>
     </>

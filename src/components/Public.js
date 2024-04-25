@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Public = () => {
   const content = (
-    <section className="h-screen">
+    <section className="">
       <main>
         public main... description.. images
       </main>

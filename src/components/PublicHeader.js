@@ -1,19 +1,50 @@
-import React from 'react'
-import ThemeChanger from '../features/dashboard/ThemeChanger'
 import { RiFridgeLine } from "react-icons/ri";
-import { NavLink, useNavigate } from 'react-router-dom';
 import { HiOutlineHome } from "react-icons/hi";
 import { MdOutlineFastfood } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
+import ThemeChanger from '../features/dashboard/ThemeChanger'
+
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
+import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import { useEffect } from "react";
+
+const FOODS_REGEX = /^\/dash\/foods(\/)?$/
 
 const PublicHeader = () => {
 
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
+  const [sendLogout, {
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  }] = useSendLogoutMutation()
+
+  useEffect(() => {
+    if (isSuccess) console.log('Success');
+    // navigate('/')
+  }, [isSuccess, navigate])
+
+  const onLogoutClicked = () => sendLogout() 
+
+  // if (isLoading) return <p>Logging Out...</p>
+  // if (isError) return <p>Error: {error.data?.message}</p>
+
+  const logoutButton = (
+    <button
+      className="btn btn-sm"
+      title="Logout"
+      onClick={onLogoutClicked}
+    >
+      Logout
+    </button>
+  )
 
   return (
     <>
-      <div className="navbar bg-base-200 rounded-full shadow-xl">
+      <div className="navbar bg-base-100 rounded-full shadow-md">
         <div className="flex-1">
           <div className="flex flex-row items-center">
             <div className="dropdown dropdown-bottom">
@@ -68,7 +99,7 @@ const PublicHeader = () => {
               </ul>
             </div>
             <NavLink
-              to="/dash"
+              to="/"
               className={({ isActive, isPending }) =>
                 isPending ? "pending" : isActive ? "active" : ""
               }
@@ -100,7 +131,7 @@ const PublicHeader = () => {
                 </a>
               </li>
               <li><a>Settings</a></li>
-              <li><a>Logout</a></li>
+              {logoutButton}
             </ul>
 
           </div>

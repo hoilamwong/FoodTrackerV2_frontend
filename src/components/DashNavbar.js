@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { HiOutlineHome } from "react-icons/hi";
 import { MdOutlineFastfood } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
-import DashHeader from './DashHeader';
+import DashHeader from './DashSideBar';
 
 const DashNavbar = () => {
 
@@ -14,7 +14,7 @@ const DashNavbar = () => {
 
   return (
     <>
-      <div className="navbar bg-base-200 rounded-full shadow-xl">
+      <div className="navbar bg-base-200 rounded-full">
         <div className="flex-1">
           <div className="flex flex-row items-center">
             <div className="dropdown dropdown-bottom">
@@ -75,7 +75,7 @@ const DashNavbar = () => {
               }
               end
             >
-              <p className="btn btn-ghost text-xl">foodTracker</p>
+              <p className="btn btn-ghost text-xl">ooooo</p>
             </NavLink>
 
           </div>

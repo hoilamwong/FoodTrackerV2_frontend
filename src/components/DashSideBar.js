@@ -1,9 +1,11 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom"
 import { HiOutlineHome } from "react-icons/hi";
 import { MdOutlineFastfood } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
+import { NavLink, useLocation, useNavigate } from "react-router-dom"
 
-const DashHeader = () => {
+import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+
+const DashSideBar = () => {
 
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -28,7 +30,7 @@ const DashHeader = () => {
   const time = new Intl.DateTimeFormat('en-US', { timeStyle: 'long' }).format(date)
 
   const content = (
-    <div className="transition-transform -translate-x-full lg:translate-x-0 z-40 flex flex-col justify-between h-56 py-8 fixed top-20 w-64">
+    <div className="transition-transform -translate-x-full lg:translate-x-0 z-20 flex flex-col justify-between h-full bg-base-200 py-8 fixed top-20 w-64">
       <ul className="menu w-56 rounded-box mx-auto">
         <li>
           <h2 onClick={onGoHomeClicked} className="menu-title hidden lg:block">
@@ -87,12 +89,6 @@ const DashHeader = () => {
         </li>
       </ul>
 
-      <div className="text-white text-base text-center h-fit">
-        <p className="text-sm font-normal text-base-content/70 pt-14">
-          {today}<br />
-          {time}
-        </p>
-      </div>
 
 
     </div>
@@ -101,4 +97,4 @@ const DashHeader = () => {
   return content
 }
 
-export default DashHeader
+export default DashSideBar

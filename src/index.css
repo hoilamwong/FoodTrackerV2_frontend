@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 
 #sidebar a {
   padding-top: 0.5rem/* 8px */;

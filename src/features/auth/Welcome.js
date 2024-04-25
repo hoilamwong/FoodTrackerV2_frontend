@@ -24,7 +24,7 @@ const Welcome = () => {
   if (isSuccess) status = <p>Fetch Food Succesfully</p>
 
   const content = (
-    <div className="min-h-screen md:w-full p-3">
+    <div className="min-h-screen md:w-full p-3 bg-base-200">
 
       <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-8 gap-4">
 
@@ -94,7 +94,7 @@ const Welcome = () => {
           </div>
         </div> */}
       </div>
-      <div className="w-full stats shadow bg-base-200 my-4">
+      <div className="w-full stats shadow bg-base-300 my-4">
         <div className="stat">
           <div className="stat-figure text-primary">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
@@ -129,7 +129,7 @@ const Welcome = () => {
 
       <div className="grid lg:grid-cols-2 gap-4">
         <ExpiringSoon />
-        <div className="card bg-base-200 shadow">
+        <div className="card bg-base-100 shadow">
           <div className="card-body">
             <h2 className="card-title">Some Graph</h2>
             <p>Timeline graph</p>

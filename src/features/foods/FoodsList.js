@@ -79,7 +79,7 @@ const FoodsList = () => {
       : null
 
     content = (
-      <div className="relative min-h-lvh px-8">
+      <div className="relative min-h-lvh px-8 ">
         <div className="text-3xl font-bold text-base-content mx-auto">
           <button onClick={() => navigate('/dash/foodLists')}>My Foods</button>
         </div>
