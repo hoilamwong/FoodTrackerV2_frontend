@@ -36,7 +36,7 @@ const FoodsList = () => {
     isSuccess,
     isError,
     error
-  } = useGetFoodsQuery(undefined, {
+  } = useGetFoodsQuery('foodsList', {
     pollingInterval: 15000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true

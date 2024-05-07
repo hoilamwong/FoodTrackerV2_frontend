@@ -20,13 +20,14 @@ const ViewFood = () => {
     return parsed_exp_date
   }
 
-  // Set Expiration Indicator Color
-  const expiration_color = food.days_until_expiration <= 0 ? 'bg-error'
-    : food.days_until_expiration < 5 ? 'bg-orange-400'
-      : food.days_until_expiration < 14 ? 'bg-yellow-400'
-        : 'bg-green-600'
-
   if (food) {
+    // Set Expiration Indicator Color
+    const expiration_color =
+      food.days_until_expiration <= 0 ? 'bg-error'
+        : food.days_until_expiration < 5 ? 'bg-orange-400'
+          : food.days_until_expiration < 14 ? 'bg-yellow-400'
+            : 'bg-green-600'
+
     content = (
       <div className="relative min-h-lvh px-8">
         {/* <p className={`${errClass} `}>{error?.data?.message}</p> */}

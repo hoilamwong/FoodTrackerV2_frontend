@@ -28,7 +28,7 @@ const Welcome = () => {
 
       <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-8 gap-4">
 
-        <div className="card col-span-3 lg:col-span-2 card-side bg-base-100 shadow">
+        <div className="card col-span-3 lg:col-span-2 card-side bg-base-300 shadow">
           <figure className="w-4/5">
             <DonutChart />
           </figure>

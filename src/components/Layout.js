@@ -10,7 +10,7 @@ const Layout = () => {
   return (
     <>
       <div data-theme={currentTheme} className="flex justify-center h-full bg-base-200 ">
-        <div className="fixed top-0 z-40 w-full lg:w-3/6 px-2 py-4">
+        <div className="fixed top-0 z-40 w-full lg:w-3/6 min-w-fit px-2 py-4">
           <PublicHeader />
         </div>
 

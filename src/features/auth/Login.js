@@ -6,12 +6,15 @@ import { useNavigate, Link } from "react-router-dom"
 import { useLoginMutation } from "./authApiSlice"
 import { setCredentials } from "./authSlice"
 
+import usePersist from '../../hooks/usePersist'
+
 const Login = () => {
   const userRef = useRef()
   const errRef = useRef()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
+  const [persist, setPersist] = usePersist()
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -51,6 +54,7 @@ const Login = () => {
 
   const handleUserInput = (e) => setUsername(e.target.value)
   const handlePwdInput = (e) => setPassword(e.target.value)
+  const handleToggle = () => setPersist(prev => !prev)
 
   const errClass = errMsg ? "errmsg" : "hidden"
 
@@ -94,10 +98,20 @@ const Login = () => {
 
             <button
               title="Login"
-              className="btn"
+              className="btn bg-primary"
             >
               Login
             </button>
+
+            <label htmlFor='persist'>
+              <input 
+                type='checkbox'
+                id='persist'
+                onChange={handleToggle}
+                checked={persist}
+              />
+              Trust This Device
+            </label>
           </div>
         </form>
       </div>

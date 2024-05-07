@@ -14,17 +14,19 @@ import Prefetch from './features/auth/Prefetch';
 import ViewFood from './features/foods/ViewFood';
 import { useSelector } from 'react-redux';
 import { selectTheme } from './features/auth/globalSlice';
+import PersistLogin from './features/auth/PersistLogin';
 
 function App() {
   const global = useSelector(selectTheme)
   const currentTheme = global?.theme
   return (
     // <html data-theme={currentTheme}>
-      <Routes>
-        <Route path='/' element={<Layout />}>
-          <Route index element={<Public />} />
-          <Route path='/login' element={<Login />} />
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        <Route index element={<Public />} />
+        <Route path='/login' element={<Login />} />
 
+        <Route element={<PersistLogin />}>
           <Route element={<Prefetch />}>
             <Route path='/dash' element={<DashLayout />}>
               <Route index element={<Welcome />} />
@@ -44,9 +46,9 @@ function App() {
 
             </Route>
           </Route>
-
         </Route>
-      </Routes>
+      </Route>
+    </Routes>
     // </html>
 
   );

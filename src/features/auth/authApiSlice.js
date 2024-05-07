@@ -1,5 +1,5 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import { logOut } from "./authSlice"
+import { logOut, setCredentials } from "./authSlice"
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -7,7 +7,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       query: credentials => ({
         url: '/auth',
         method: 'POST',
-        body: { ...credentials}
+        body: { ...credentials }
       })
     }),
     sendLogout: builder.mutation({
@@ -16,13 +16,15 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try{
+        try {
           const { data } = await queryFulfilled
           console.log(data);
           dispatch(logOut())
           //  remove all existing cache entries
-          dispatch(apiSlice.util.resetApiState())
-        }catch (err){
+          setTimeout(() => {
+            dispatch(apiSlice.util.resetApiState())
+          }, 1000)
+        } catch (err) {
           console.log(err);
         }
       }
@@ -31,7 +33,17 @@ export const authApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: '/auth/refresh',
         method: 'GET',
-      })
+      }),
+      async onQueryStarted(arg, {dispatch, queryFulfilled}) {
+        try {
+          const { data } = await queryFulfilled
+          console.log(data);
+          const { accessToken } = data
+          dispatch(setCredentials({ accessToken }))
+        } catch (err) {
+          console.log(err);
+        }
+      }
     })
   })
 })
