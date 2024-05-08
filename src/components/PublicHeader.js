@@ -74,7 +74,7 @@ const PublicHeader = () => {
                       <div className="flex">
                         <HiOutlineHome size={30} />
                       </div>
-                      <p className="px-6">Home</p>
+                      <p className="px-6">Dashboard</p>
                     </div>
                   </NavLink>
                 </li>
@@ -134,7 +134,7 @@ const PublicHeader = () => {
               }
               end
             >
-              <p className="btn btn-ghost text-xl">foodTracker</p>
+              <p className="btn btn-ghost text-xl">PixelPantry</p>
             </NavLink>
 
           </div>
@@ -143,9 +143,9 @@ const PublicHeader = () => {
         <div className="flex-none gap-2">
           <ThemeChanger />
 
-          <div className="form-control hidden md:block">
+          {/* <div className="form-control hidden md:block">
             <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
-          </div>
+          </div> */}
 
           <div className="dropdown dropdown-end hidden md:block">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">

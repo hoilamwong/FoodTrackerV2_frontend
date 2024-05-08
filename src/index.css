@@ -2,11 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .main-feature-description {
+    @apply italic mx-16;
+  }
+
+  .main-feature-header {
+    @apply flex items-center font-bold text-lg
+  }
+}
+
 html, body {
   height: 100%;
   margin: 0;
 }
-
 
 #sidebar a {
   padding-top: 0.5rem/* 8px */;

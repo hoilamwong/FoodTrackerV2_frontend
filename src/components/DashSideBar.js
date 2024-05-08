@@ -10,21 +10,6 @@ const DashSideBar = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  const onGoHomeClicked = () => navigate('/dash')
-  
-
-  let goHomeButton = null
-  if (pathname !== '/dash') {
-    goHomeButton = (
-      <button
-        title="Dash Home"
-        onClick={onGoHomeClicked}
-      >
-        Home
-      </button>
-    )
-  }
-
   const date = new Date()
   const today = new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(date)
   const time = new Intl.DateTimeFormat('en-US', { timeStyle: 'long' }).format(date)
@@ -33,7 +18,7 @@ const DashSideBar = () => {
     <div className="transition-transform -translate-x-full lg:translate-x-0 z-20 flex flex-col justify-between h-full bg-base-200 py-8 fixed top-20 w-64">
       <ul className="menu w-56 rounded-box mx-auto">
         <li>
-          <h2 onClick={onGoHomeClicked} className="menu-title hidden lg:block">
+          <h2 className="menu-title hidden lg:block">
             🥡🥡🥡
           </h2>
 
@@ -50,7 +35,7 @@ const DashSideBar = () => {
                   <div className="flex">
                     <HiOutlineHome size={30} />
                   </div>
-                  <p className="px-6">Home</p>
+                  <p className="px-6">Dashboard</p>
                 </div>
               </NavLink>
             </li>

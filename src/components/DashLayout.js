@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import { useSelector } from 'react-redux';
 import { selectTheme } from "../features/auth/globalSlice";
+import DashSideBar from "./DashSideBar"
 
 const DashLayout = () => {
   const global = useSelector(selectTheme)
@@ -8,8 +9,12 @@ const DashLayout = () => {
   return (
     <>
       <div data-theme={currentTheme} className="flex">
+
         <div className="w-full font-mono bg-base-200 h-screen">
-          <Outlet />
+          <DashSideBar />
+          <div className="lg:pl-64 h-full">
+            <Outlet />
+          </div>
         </div>
       </div>
     </>

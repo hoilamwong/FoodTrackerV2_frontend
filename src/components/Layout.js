@@ -14,11 +14,8 @@ const Layout = () => {
           <PublicHeader />
         </div>
 
-        <div className="w-full font-mono pt-20 mt-4 h-screen ">
-          <DashSideBar />
-          <div className="lg:pl-64">
-            <Outlet />
-          </div>
+        <div className="w-full font-mono mt-24 min-h-screen ">
+          <Outlet />
         </div>
       </div>
     </>
