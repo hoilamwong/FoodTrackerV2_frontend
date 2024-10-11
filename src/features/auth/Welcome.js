@@ -6,6 +6,9 @@ import ThemeChanger from "../dashboard/ThemeChanger"
 import { useSelector } from "react-redux"
 import { selectAllFoods } from "../foods/foodsApiSlice";
 
+import { FaBoxOpen } from "react-icons/fa6";
+import { PiBroomBold } from "react-icons/pi";
+
 const Welcome = () => {
   const {
     isLoading,
@@ -16,7 +19,7 @@ const Welcome = () => {
 
   const allFoods = useSelector(state => selectAllFoods(state))
 
-  const expiringFoodPercentage = ((allFoods.filter(food => food.days_until_expiration <= 5).length / allFoods.length) * 100).toFixed(2) 
+  const expiringFoodPercentage = ((allFoods.filter(food => food.days_until_expiration <= 5).length / allFoods.length) * 100).toFixed(2)
 
   let status
   if (isLoading) status = <p>Fetching Foods...</p>
@@ -24,80 +27,52 @@ const Welcome = () => {
   if (isSuccess) status = <p>Fetch Food Succesfully</p>
 
   const content = (
-    <div className="min-h-screen md:w-full p-3 bg-base-200">
+    <div className="min-h-screen  md:w-full p-3 bg-base-200 ">
 
-      <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-8 gap-4">
+      <div className="mt-28 flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 lg:gap-8 gap-4">
 
         <div className="card col-span-3 lg:col-span-2 card-side bg-base-300 shadow">
           <figure className="w-4/5">
             <DonutChart />
           </figure>
           <div className="card-body">
-            <h2 className="card-title">{expiringFoodPercentage}% of items are <br/>expiring soon / expired!</h2>
+            <h2 className="card-title">{expiringFoodPercentage}% of items are <br />expiring soon / expired!</h2>
             <p>Click the button to view a list of food in your storage.</p>
             <div className="card-actions justify-end">
-              <button className="btn btn-accent">View Items</button>
+              <button className="btn btn-accent bg-accent/70">View Items</button>
             </div>
           </div>
         </div>
 
         <div className="card bg-base-100 shadow image-full">
-          <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+          {/* <figure><img src="https://www.foodhygienecompany.co.uk/wp-content/uploads/sites/4/2019/06/bigstock-158368310-1024x683.jpg" alt="Shoes" /></figure> */}
+
           <div className="card-body">
-            <h2 className="card-title">Foods!</h2>
-            <p>Start Managing Your Storage</p>
+            <h2 className="card-title">Food Management</h2>
+            <p>Managing food storage efficiently is key to reducing waste, saving money, and ensuring you always have what you need for meals.</p>
             <div className="card-actions justify-end">
-              <button className="btn btn-primary">Add Food</button>
+              <button className="btn btn-primary bg-primary/70">Add New Item</button>
             </div>
           </div>
         </div>
 
+        {/* Scan Barcode */}
         <div className="card glass shadow">
-          <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="car!" /></figure>
+          <figure><img src="https://media.istockphoto.com/id/660681512/photo/fresh-organic-tomatoes-inside-of-market-package-with-bar-code-label.jpg?s=2048x2048&w=is&k=20&c=4YUAjOWATmRGFbvjqcBbQtrDD081mUj6DJPLhxR8Uks=" alt="car!" /></figure>
           <div className="card-body">
-            <h2 className="card-title">Life hack</h2>
-            <p>How to park your car at your garage?</p>
+            <h2 className="card-title">Barcode Scanning</h2>
+            <div class="badge badge-secondary badge-outline">new feature</div>
             <div className="card-actions justify-end">
-              <button className="btn btn-primary">Learn now!</button>
+              <button className="btn btn-primary bg-primary/70">Scan Item</button>
             </div>
           </div>
         </div>
 
-        {/* <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">Total Items:</h2>
-            <p>Good:</p>
-            <p>Expire Soon:</p>
-            <p>Spoiled:</p>
-          </div>
-        </div>
-
-        <div className="card bg-base-200 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">Last Update:</h2>
-            <p>Date:</p>
-            <p>Item Name:</p>
-            <p></p>
-          </div>
-        </div>
-
-        <div className="card bg-base-300 shadow-xl col-span-3 lg:col-span-2">
-          <div className="card-body">
-            <h2 className="card-title">Some Graph</h2>
-            <p>Timeline graph</p>
-          </div>
-        </div> */}
-        {/* <div className="card bg-base-300 shadow-xl col-span-2 lg:col-span-4">
-          <div className="card-body">
-            <h2 className="card-title">Some Graph</h2>
-            <p>Timeline graph</p>
-          </div>
-        </div> */}
       </div>
       <div className="w-full stats shadow bg-base-300 my-4">
         <div className="stat">
           <div className="stat-figure text-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            <FaBoxOpen size={40} />
           </div>
           <div className="stat-title">Total Items</div>
           <div className="stat-value text-primary">25</div>
@@ -119,7 +94,8 @@ const Welcome = () => {
 
         <div className="stat">
           <div className="stat-figure text-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <PiBroomBold size={38} />
+            {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> */}
           </div>
           <div className="stat-title">Last Clean Out </div>
           <div className="stat-value text-secondary">203 Days Ago</div>
@@ -127,7 +103,7 @@ const Welcome = () => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-4">
+      <div className="grid lg:grid-cols-2 gap-4 h-72">
         <ExpiringSoon />
         <div className="card bg-base-100 shadow">
           <div className="card-body">

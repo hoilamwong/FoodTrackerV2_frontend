@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Public = () => {
 
   const landing = (
-    <section className="flex flex-col lg:flex-row items-center px-20 mb-24 lg:mb-44 lg:mt-28">
+    <section className="flex flex-col lg:flex-row items-center px-20 mb-24 lg:mb-44 lg:mt-48">
       <div className="basis-1/2 pb-8 text-center">
         <h1 className="font-extrabold text-7xl py-2">Pixel Pantry</h1>
         <h2>
@@ -28,7 +28,7 @@ const Public = () => {
   )
 
   const features = (
-    <section className="bg-base-300 h-fit py-6">
+    <section className="bg-base-200 h-fit py-6">
       <div className="text-center">
         <div className="text-2xl font-bold pb-1">Website Features</div>
         <p className="px-24 lg:px-48">
@@ -94,9 +94,9 @@ const Public = () => {
   )
 
   const showcase = (
-    <div className="w-3/4 mx-auto">
+    <section className="w-3/4 mx-auto">
       <img className="rounded-3xl" src="/images/siteExample.png" alt="Webpage Example Image" />
-    </div>
+    </section>
   )
 
   const about = (
@@ -129,9 +129,9 @@ const Public = () => {
   )
 
   const content = (
-    <>
+    <div className="">
       {landing}
-      <main className="grid gap-16 pb-16">
+      <main className="grid gap-16 pb-16 bg-base-300">
         {features}
         {showcase}
         <Link className="btn btn-lg btn-primary w-fit mx-auto" to="/login">
@@ -139,7 +139,7 @@ const Public = () => {
         </Link>
         {about}
       </main>
-    </>
+    </div>
   )
 
   return content

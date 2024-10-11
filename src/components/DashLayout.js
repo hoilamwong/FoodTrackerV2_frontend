@@ -10,9 +10,9 @@ const DashLayout = () => {
     <>
       <div data-theme={currentTheme} className="flex">
 
-        <div className="w-full font-mono bg-base-200 h-screen">
+        <div className="w-full font-mono bg-base-200 ">
           <DashSideBar />
-          <div className="lg:pl-64 h-full">
+          <div className="lg:pl-64">
             <Outlet />
           </div>
         </div>

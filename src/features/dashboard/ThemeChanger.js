@@ -8,7 +8,7 @@ const ThemeChanger = () => {
   const global = useSelector(selectTheme)
   const currentTheme = global?.theme
 
-  const isChecked = currentTheme === "dracula" ? true : false
+  const isChecked = currentTheme === "night" ? true : false
 
   return (
     <div>

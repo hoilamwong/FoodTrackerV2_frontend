@@ -9,12 +9,12 @@ const Layout = () => {
   const currentTheme = global?.theme
   return (
     <>
-      <div data-theme={currentTheme} className="flex justify-center h-full bg-base-200 ">
-        <div className="fixed top-0 z-40 w-full lg:w-3/6 min-w-fit px-2 py-4">
+      <div data-theme={currentTheme} className="flex justify-center h-screen bg-base-200 ">
+        <div className="fixed top-0 z-40 w-5/6 lg:w-3/6 min-w-fit px-2 py-4">
           <PublicHeader />
         </div>
 
-        <div className="w-full font-mono mt-24 min-h-screen ">
+        <div className="w-full font-mono bg-base-300">
           <Outlet />
         </div>
       </div>

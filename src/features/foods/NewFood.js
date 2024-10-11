@@ -140,9 +140,9 @@ const NewFood = () => {
   }
 
   return (
-    <div className='px-8'>
+    <div className='px-8 mt-28 h-screen'>
       <p className={`${errClass} `}>{error?.data?.message}</p>
-      <div className="text-3xl font-bold text-base-content mx-auto">
+      <div className="text-1xl text-center font-bold text-base-content mx-auto">
         Add New Food
       </div>
 

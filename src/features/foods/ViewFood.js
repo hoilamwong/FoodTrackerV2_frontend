@@ -29,7 +29,7 @@ const ViewFood = () => {
             : 'bg-green-600'
 
     content = (
-      <div className="relative min-h-lvh px-8">
+      <div className="relative h-screen px-8 pt-24">
         {/* <p className={`${errClass} `}>{error?.data?.message}</p> */}
         <div className="text-3xl font-bold text-base-content mx-auto">
           <button onClick={() => navigate('/dash/foodLists')}>My Foods</button> > {food.name}

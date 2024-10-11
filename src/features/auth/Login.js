@@ -62,11 +62,12 @@ const Login = () => {
 
   return (
     <main>
-      <div className='h-full item-center mt-16'>
+      <div className='mt-52'>
         {/* error message */}
-        <p ref={errRef} className={`${errClass} text-error`} aria-live="assertive">{errMsg}</p>
+        <p ref={errRef} className={`${errClass} text-error text-center`} aria-live="assertive">{errMsg}</p>
+
         <form onSubmit={handleSubmit}>
-          <div className='grid gap-8 my-auto m-auto w-2/4 '>
+          <div className='grid gap-8 my-auto m-auto w-3/4 lg:w-1/2'>
 
             <label className="input input-bordered flex items-center gap-2" htmlFor="username" readOnly>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
@@ -96,25 +97,37 @@ const Login = () => {
               />
             </label>
 
-            <button
-              title="Login"
-              className="btn bg-primary"
-            >
-              Login
-            </button>
-
             <label htmlFor='persist'>
-              <input 
+              <input
                 type='checkbox'
                 id='persist'
                 onChange={handleToggle}
                 checked={persist}
+                className='mx-1'
               />
               Trust This Device
             </label>
+
+            <button
+              title="Login"
+              className="btn bg-primary w-1/2 mx-auto"
+            >
+              Login
+            </button>
           </div>
         </form>
       </div>
+
+      <div className='flex justify-center'>
+        <button
+          title="Register"
+          className="btn bg-neutral mx-auto mt-4"
+          onClick={() => navigate('/register')}
+        >
+          Register
+        </button>
+      </div>
+
     </main>
   )
 }

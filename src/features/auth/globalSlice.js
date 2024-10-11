@@ -9,7 +9,7 @@ export const globalSlice = createSlice({
     toggleTheme: (state) => {
       let newTheme
       if (state.theme == "cupcake")
-        newTheme = "dracula"
+        newTheme = "night"
       else
         newTheme = "cupcake"
       state.theme = newTheme

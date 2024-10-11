@@ -25,6 +25,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Public />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<NewUserForm />} />
 
         <Route element={<PersistLogin />}>
           <Route element={<Prefetch />}>
